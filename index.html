@@ -1,4 +1,4 @@
-<!DOCTYPE html> 
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -57,15 +57,15 @@
       text-shadow: 2px 2px 5px #ff69b4, 0 0 15px gold;
     }
     
-     p {
-      font-size: 1.3em;
+    p {
+      font-size: 1.8em;
       margin: 5px;
       color: #fff;
       text-shadow: 2px 2px 5px #ff69b4, 0 0 15px gold;
     }
 
     .btn {
-      margin-top: 20px;
+      margin: 10px;
       padding: 12px 25px;
       font-size: 1.2em;
       background: #ff69b4;
@@ -128,11 +128,15 @@
   <div class="container">
     <h1>Hey Vanshu 💖</h1>
     <p>I was thinking… <br />how about we make our first meet unforgettable and watch <br /> The Conjuring: Last Rites together... <br /> Movie Date ???🎬🍿</p>
-    <button class="btn" onclick="sayYes()">Yes 💕</button>
+    <button class="btn yes-btn" onclick="sayYes()">Yes 💕</button>
+    <button class="btn no-btn" onmouseover="runAway(this)" ontouchstart="runAway(this)">No 💔</button>
   </div>
 
   <script>
     const icons = ["❤️","💖","💛","💘","🌸","🌹","🌼"];
+
+    // Replace with YOUR Google Apps Script Web App URL
+    const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbwc077RaiRptBISdjxp1fP8jMxEc7QRO6PsirAXDu6QtagYSk_F0RrOJzktTHeajwbC/exec";
 
     // Add glitter
     for (let i = 0; i < 100; i++) {
@@ -153,12 +157,22 @@
       el.style.top = window.innerHeight + "px";
       el.style.fontSize = (20 + Math.random() * 20) + "px";
       document.body.appendChild(el);
-
       setTimeout(() => el.remove(), 6000);
     }, 500);
 
+    // Log responses to Google Sheet
+    function logResponse(choice) {
+      fetch(WEB_APP_URL, {
+        method: "POST",
+        body: JSON.stringify({ response: choice }),
+        headers: { "Content-Type": "application/json" }
+      }).catch(err => console.log("Logging failed", err));
+    }
+
     // Yes button action
     function sayYes() {
+      logResponse("Yes");
+
       // Burst effect
       for (let i = 0; i < 40; i++) {
         let el = document.createElement("div");
@@ -177,8 +191,17 @@
       glass.className = "glass";
       glass.innerText = "Yaayy! I Can't wait now... 💕🎬🍿🌸🌹🌼";
       document.body.appendChild(glass);
-
       setTimeout(() => glass.remove(), 3500);
+    }
+
+    // No button runaway
+    function runAway(btn) {
+      logResponse("No (attempt)");
+      const x = Math.random() * (window.innerWidth - btn.offsetWidth);
+      const y = Math.random() * (window.innerHeight - btn.offsetHeight);
+      btn.style.position = "absolute";
+      btn.style.left = x + "px";
+      btn.style.top = y + "px";
     }
   </script>
 </body>
