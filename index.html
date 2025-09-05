@@ -116,10 +116,10 @@
   </div>
   <script>
     const icons = ["❤️","💖","💛","💘","🌸","🌹","🌼"];
-    // 🔗 Replace with your Google Apps Script Web App URL
+    // 🔗 Replace with your deployed Google Apps Script Web App URL
     const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbwvkpbqqQuKahGbSPDMY1vsYdI2bJ3mUpZaKLmZ2vY/dev";
     
-    // Glitter background
+    // Glitter
     for (let i = 0; i < 100; i++) {
       let glitter = document.createElement("div");
       glitter.className = "glitter";
@@ -141,24 +141,19 @@
       setTimeout(() => el.remove(), 6000);
     }, 500);
     
-    // Send response to Google Sheet
+    // Send response
     function logResponse(choice) {
       fetch(WEB_APP_URL, {
         method: "POST",
-        mode: "no-cors",
         body: JSON.stringify({ response: choice }),
         headers: { "Content-Type": "application/json" }
       })
-      .then(() => {
-        console.log("Response sent successfully!");
-      })
-      .catch(error => {
-        console.error("Logging failed:", error);
-        // Fallback: still works even if logging fails
-      });
+      .then(res => res.text())
+      .then(txt => console.log("Logged:", txt))
+      .catch(err => console.error("Logging failed:", err));
     }
     
-    // Yes button
+    // Yes
     function sayYes() {
       logResponse("Yes");
       for (let i = 0; i < 40; i++) {
@@ -179,7 +174,7 @@
       setTimeout(() => glass.remove(), 3500);
     }
     
-    // No button
+    // No
     function runAway(btn) {
       logResponse("No (attempt)");
       const x = Math.random() * (window.innerWidth - btn.offsetWidth);
