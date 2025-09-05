@@ -110,17 +110,15 @@
 <body>
   <div class="container">
     <h1>Hey Vanshu 💖</h1>
-    <p>I was thinking… <br />how about we make our first meet unforgettable and watch <br /> The Conjuring: Last Rites together... <br /><br /> Movie Date ???🎬🍿<br /></p>
+    <p>I was thinking… <br />how about we make our first meet unforgettable and watch <br /> The Conjuring: Last Rites together... <br /> Movie Date ???🎬🍿</p>
     <button class="btn yes-btn" onclick="sayYes()">Yes 💕</button>
     <button class="btn no-btn" onmouseover="runAway(this)" ontouchstart="runAway(this)">No 💔</button>
   </div>
-
   <script>
     const icons = ["❤️","💖","💛","💘","🌸","🌹","🌼"];
-
     // 🔗 Replace with your Google Apps Script Web App URL
-    const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyflHCCLKkgAqewEHHu008CnCtboET8zv8D7GBDZpXS4IfxSbU1j0UuHpI3M2a8Od4/exec";
-
+    const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbwvkpbqqQuKahGbSPDMY1vsYdI2bJ3mUpZaKLmZ2vY/dev";
+    
     // Glitter background
     for (let i = 0; i < 100; i++) {
       let glitter = document.createElement("div");
@@ -130,7 +128,7 @@
       glitter.style.animationDelay = Math.random() * 3 + "s";
       document.body.appendChild(glitter);
     }
-
+    
     // Floating icons
     setInterval(() => {
       let el = document.createElement("div");
@@ -142,16 +140,19 @@
       document.body.appendChild(el);
       setTimeout(() => el.remove(), 6000);
     }, 500);
-
+    
     // Send response to Google Sheet
     function logResponse(choice) {
       fetch(WEB_APP_URL, {
         method: "POST",
         body: JSON.stringify({ response: choice }),
         headers: { "Content-Type": "application/json" }
-      }).catch(err => console.log("Logging failed", err));
+      })
+      .then(r => r.text())
+      .then(text => console.log("Server response:", text))
+      .catch(err => console.log("Logging failed:", err));
     }
-
+    
     // Yes button
     function sayYes() {
       logResponse("Yes");
@@ -172,7 +173,7 @@
       document.body.appendChild(glass);
       setTimeout(() => glass.remove(), 3500);
     }
-
+    
     // No button
     function runAway(btn) {
       logResponse("No (attempt)");
