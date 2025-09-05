@@ -145,6 +145,7 @@
     function logResponse(choice) {
       fetch(WEB_APP_URL, {
         method: "POST",
+        mode: "no-cors",
         body: JSON.stringify({ response: choice }),
         headers: { "Content-Type": "application/json" }
       })
